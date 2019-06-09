@@ -1,0 +1,15 @@
+.foo {
+  z-index: 1;
+}
+
+@at-start media print;
+
+.foo {
+ z-index: 3; 
+}
+
+.bar {
+  z-index:2;
+}
+
+@at-end media print;

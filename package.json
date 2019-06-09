@@ -4,7 +4,7 @@
   "description": "Wraps rules between two '@at-start <name>;' and '@at-end <name>;' rules into a '@<name> {}' block.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "postcss-tape"
   },
   "repository": {
     "type": "git",
@@ -23,6 +23,13 @@
   },
   "homepage": "https://github.com/yoannisj/postcss-atwrap#readme",
   "dependencies": {
-    "postcss": "^5.2.16"
+    "postcss": "^7.0.17"
+  },
+  "devDependencies": {
+    "postcss-tape": "^5.0.0"
+  },
+  "postcssConfig": {
+    "plugin": "./index.js",
+    "config": "./.tape.js"
   }
 }

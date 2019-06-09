@@ -1,9 +1,10 @@
-var postcss = require('postcss');
+const postcss = require('postcss');
 
 function findStart(endRule, ruleName)
 {
-  var ruleName = ruleName || endRule.params,
-    prev = endRule.prev();
+  ruleName = ruleName || endRule.params;
+
+  let prev = endRule.prev();
 
   // loop over previous rules
   while (prev)
@@ -23,14 +24,14 @@ function findStart(endRule, ruleName)
 
 module.exports = postcss.plugin('atwrap', function atwrap(opts) {
 
-  return function(css, res) {
+  opts = opts || {};
 
-    opts = opts || {};
+  return function(css, res) {
 
     css.walkAtRules('at-end', function(endRule) {
 
       // find matching '@at-start' rule before current '@at-end' rule
-      var ruleName = endRule.params,
+      const ruleName = endRule.params,
         startRule = findStart(endRule, ruleName);
 
       // throw warning and interrupt if no '@at-start' rule was found
@@ -39,13 +40,13 @@ module.exports = postcss.plugin('atwrap', function atwrap(opts) {
         return;
       }
 
-      var parent = endRule.parent,
-        wrapped = [];
+      let parent = endRule.parent;
+      let wrapped = [];
 
       // collect sibling rules between '@at-start' and '@at-end'
       parent.each(function(rule) {
 
-        var index = rule.parent.index(rule);
+        let index = rule.parent.index(rule);
         if (index > startRule.parent.index(startRule) && index < endRule.parent.index(endRule))  {
           // collect rule
           wrapped.push(rule.clone());
@@ -56,12 +57,13 @@ module.exports = postcss.plugin('atwrap', function atwrap(opts) {
       });
 
       // remove ruleName from params given to '@at-start' rule
-      var ruleParams = startRule.params.replace( ruleName, '' ).trim(),
-        // create new atRule to contain selected children
-        atRule = postcss.atRule({
-          name: ruleName,
-          params: ruleParams
-        });
+      const ruleParams = startRule.params.replace(ruleName, '').trim();
+
+      // create new atRule to contain selected children
+      let atRule = postcss.atRule({
+        name: ruleName,
+        params: ruleParams
+      });
 
       // add new at-rule to the parent
       parent.insertAfter(endRule, atRule);

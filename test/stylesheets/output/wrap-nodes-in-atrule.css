@@ -1,0 +1,14 @@
+.foo {
+  z-index: 1;
+}
+
+@media print {
+
+.foo {
+ z-index: 3; 
+}
+
+.bar {
+  z-index:2;
+}
+}
